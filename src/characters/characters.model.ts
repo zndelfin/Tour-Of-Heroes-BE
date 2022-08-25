@@ -1,3 +1,4 @@
+
 export class CharactersModel {
     constructor(
         public id: string,

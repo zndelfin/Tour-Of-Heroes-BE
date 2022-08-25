@@ -7,7 +7,7 @@ export class CharactersService {
     
     private characters: CharactersModel[] = [];
 
-    insertCharacter(name: string, desc: string) {
+    addCharacter(name: string, desc: string) {
         const charId = uuid();
         const newCharacter = new CharactersModel(charId, name, desc);
         this.characters.push(newCharacter);

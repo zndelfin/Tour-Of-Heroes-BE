@@ -1,14 +1,5 @@
-import {
-    Controller,
-    Post,
-    Body,
-    Get,
-    Param,
-    Patch,
-    Delete,
-  } from '@nestjs/common';
-  
-  import { CharactersService } from './characters.service';
+import { Controller, Post, Body, Get, Param, Patch, Delete } from '@nestjs/common';
+import { CharactersService } from './characters.service';
   
   @Controller('characters')
   export class CharactersController {
@@ -19,7 +10,7 @@ import {
       @Body('name') charName: string,
       @Body('description') charDesc: string
     ) {
-      const generatedId = this.charactersService.insertCharacter(
+      const generatedId = this.charactersService.addCharacter(
         charName,
         charDesc
       );

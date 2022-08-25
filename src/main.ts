@@ -1,13 +1,9 @@
 import { NestFactory } from '@nestjs/core';
-import { CharactersModule } from './characters/characters.module';
-import { ValidationPipe } from "@nestjs/common";
+import { AppModule } from './app.module'
 
 async function bootstrap() {
-  const app = await NestFactory.create(CharactersModule);
-
-  app.useGlobalPipes(
-    new ValidationPipe()
-  );
+  const app = await NestFactory.create(AppModule);
+  app.enableCors();
 
   await app.listen(3000);
 }

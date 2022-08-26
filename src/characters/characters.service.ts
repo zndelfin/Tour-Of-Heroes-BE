@@ -36,7 +36,7 @@ export class CharactersService {
       }
     
       deleteCharacter(charId: string) {
-          const characterIndex = this.characters.findIndex(char => char.id === charId);
-          this.characters.splice(characterIndex, 1);
+          const filtered = this.characters.filter(character=> charId !== character.id)
+          return this.characters = filtered;
       }
 }

@@ -19,34 +19,24 @@ export class CharactersService {
       }
     
       getSingleCharacter(characterId: string) {
-        const character = this.findCharacter(characterId)[0];
+        const character = this.characters.find(character => character.id === characterId)
         return { ...character };
       }
     
       updateCharacter(characterId: string, name: string, desc: string) {
-        const [character, index] = this.findCharacter(characterId);
-        const updatedCharacter = { ...character };
+        const character = this.characters.find(character => character.id === characterId)
+        console.log(character)
         if (name) {
-          updatedCharacter.name = name;
+          character.name = name;
         }
         if (desc) {
-          updatedCharacter.description = desc;
+          character.description = desc;
         }
-        this.characters[index] = updatedCharacter;
+        return character;
       }
     
       deleteCharacter(charId: string) {
-          const index = this.findCharacter(charId)[1];
-          this.characters.splice(index, 1);
+          const characterIndex = this.characters.findIndex(char => char.id === charId);
+          this.characters.splice(characterIndex, 1);
       }
-    
-      private findCharacter(id: string): [CharactersModel, number] {
-        const characterIndex = this.characters.findIndex(char => char.id === id);
-        const character = this.characters[characterIndex];
-        if (!character) {
-          throw new NotFoundException("Character not found!");
-        }
-        return [character, characterIndex];
-      }
-
 }

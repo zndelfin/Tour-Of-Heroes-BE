@@ -4,8 +4,36 @@ import { v4 as uuid } from "uuid";
 
 @Injectable()
 export class CharactersService {
-    
-    private characters: CharactersModel[] = [];
+  
+    initialValues = [
+      {
+          "id": "1",
+          "name": "Aslaug",
+          "description": "warrior queen"
+      },
+  
+      {
+          "id": "2",
+          "name": "Ivar the Boneless",
+          "description": "commander of the Great Heathen Army"
+      },
+      
+      
+      {
+          "id": "3",
+          "name": "Lagertha the Sheildmaiden",
+          "description": "aka Hlaógerór"
+      },
+      
+      
+      {
+          "id": "4",
+          "name": "Ragnar Lothbrok",
+          "description": "aka Ragnard Sigurdsson"
+      }
+  ];
+
+  private characters: CharactersModel[] = this.initialValues;
 
     addCharacter(name: string, desc: string) {
         const charId = uuid();
@@ -25,7 +53,6 @@ export class CharactersService {
     
       updateCharacter(characterId: string, name: string, desc: string) {
         const character = this.characters.find(character => character.id === characterId)
-        console.log(character)
         if (name) {
           character.name = name;
         }

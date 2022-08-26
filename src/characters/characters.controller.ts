@@ -28,18 +28,16 @@ import { CharactersService } from './characters.service';
     }
   
     @Patch(':id')
-    updateProduct(
+    updateCharacter(
       @Param('id') charId: string,
       @Body('name') charName: string,
       @Body('description') charDesc: string
     ) {
-      this.charactersService.updateCharacter(charId, charName, charDesc);
-      return null;
+      return this.charactersService.updateCharacter(charId, charName, charDesc);
     }
   
     @Delete(':id')
     removeCharacter(@Param('id') charId: string) {
-        this.charactersService.deleteCharacter(charId);
-        return null;
+      return this.charactersService.deleteCharacter(charId);
     }
   }

@@ -46,17 +46,16 @@ export class CharactersService {
         return [...this.characters];
       }
     
-      getSingleCharacter(characterId: string) {
-        const character = this.characters.find(character => character.id === characterId)
-        return { ...character };
-      }
+    getSingleCharacter(characterId: string) {
+      return this.characters.find(character => character.id === characterId)
+    }
     
       updateCharacter(characterId: string, name: string, desc: string) {
         const character = this.characters.find(character => character.id === characterId)
         if (name) {
           character.name = name;
         }
-        if (desc) {
+        if (desc) {  
           character.description = desc;
         }
         return character;
@@ -66,4 +65,4 @@ export class CharactersService {
           const filtered = this.characters.filter(character=> charId !== character.id)
           return this.characters = filtered;
       }
-}
+    }

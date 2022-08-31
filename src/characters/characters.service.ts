@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CharactersModel } from './characters.model';
 import { v4 as uuid } from 'uuid';
 

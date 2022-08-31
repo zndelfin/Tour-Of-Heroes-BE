@@ -17,7 +17,7 @@ export class CharactersController {
   }
 
   @Get(':id')
-  getCharacters(@Param('id') charId: string) {
+  getSingleCharacter(@Param('id') charId: string) {
     return this.charactersService.getSingleCharacter(charId);
   }
 

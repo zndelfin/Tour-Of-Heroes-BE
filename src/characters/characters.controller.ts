@@ -27,7 +27,7 @@ export class CharactersController {
   }
 
   @Delete(':id')
-  removeCharacter(@Param('id') charId: string) {
+  deleteCharacter(@Param('id') charId: string) {
     return this.charactersService.deleteCharacter(charId);
   }
 }

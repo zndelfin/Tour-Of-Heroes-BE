@@ -44,6 +44,7 @@ describe('CharactersController', () => {
             })
           ])
         );
+        //console.log(response.body);
       });
   });
 
@@ -53,6 +54,7 @@ describe('CharactersController', () => {
       .get('/characters/1')
       .then((response) => {
         expect(response.body).toEqual(result);
+        console.log(response.body);
       });
   });
 
@@ -67,6 +69,7 @@ describe('CharactersController', () => {
         expect(response.body).toEqual({
           id: expect.any(String)
         });
+        //console.log(response.body);
       });
   });
 
@@ -80,7 +83,7 @@ describe('CharactersController', () => {
       })
       .then((response) => {
         expect(response.body).toEqual(result);
-        //console.log(response.body);
+        console.log(response.body);
       });
   });
 

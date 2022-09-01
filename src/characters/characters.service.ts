@@ -59,7 +59,8 @@ export class CharactersService {
   }
 
   deleteCharacter(charId: string) {
+    const index = this.characters.findIndex((char) => char.id === charId);
     const filtered = this.characters;
-    return filtered.filter((character) => charId !== character.id);
+    return filtered.splice(index, 1);
   }
 }

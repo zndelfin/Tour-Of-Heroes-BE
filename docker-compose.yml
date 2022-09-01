@@ -1,0 +1,11 @@
+version: "2.3" # Specify docker-compose file version to allow variable substitution
+services:
+  db:
+    build: .
+    restart: unless-stopped
+    healthcheck:
+      test: "exit 0"
+    environment:
+      - POSTGRES_DB=${DB_NAME:-heroesdb}
+    ports:
+      - "5432:5432"

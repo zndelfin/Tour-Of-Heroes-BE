@@ -4,6 +4,7 @@ import { CharactersService } from './characters.service';
 import { CharactersModule } from './characters.module';
 import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
+import { doesNotMatch } from 'assert';
 
 describe('CharactersController', () => {
   let app: INestApplication;
@@ -47,7 +48,8 @@ describe('CharactersController', () => {
       .get('/characters/1')
       .then((response) => {
         expect(response.body).toEqual(result);
-        console.log(response.body);
+        expect(response.ok);
+        //console.log(response.body);
       });
   });
 
@@ -76,14 +78,16 @@ describe('CharactersController', () => {
       })
       .then((response) => {
         expect(response.body).toEqual(result);
-        console.log(response.body);
+        expect(response.ok);
+        //console.log(response.body);
       });
   });
 
   it('#deleteCharacter', () => {
     return request(app.getHttpServer())
-      .delete('/characters/1')
+      .delete('/characters/2')
       .then((response) => {
+        expect(response.ok);
         console.log(response.body);
       });
   });

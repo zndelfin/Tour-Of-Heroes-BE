@@ -22,7 +22,7 @@ describe('CharactersController', () => {
     await app.init();
   });
 
-  it('GET allCharacters', () => {
+  it('#getAllCharacters', () => {
     return request(app.getHttpServer())
       .get('/characters')
       .expect(200)
@@ -41,7 +41,7 @@ describe('CharactersController', () => {
       });
   });
 
-  it('GET getSingleCharacter', () => {
+  it('#getSingleCharacter', () => {
     const result = { id: '1', name: 'Aslaug', description: 'warrior queen' };
     return request(app.getHttpServer())
       .get('/characters/1')
@@ -51,7 +51,7 @@ describe('CharactersController', () => {
       });
   });
 
-  it('POST addCharacter', () => {
+  it('#addCharacter', () => {
     return request(app.getHttpServer())
       .post('/characters')
       .send({
@@ -66,7 +66,7 @@ describe('CharactersController', () => {
       });
   });
 
-  it('PATCH updateCharacter', () => {
+  it('#updateCharacter', () => {
     const result = { id: '3', name: 'new name', description: 'new description' };
     return request(app.getHttpServer())
       .patch('/characters/3')
@@ -80,7 +80,7 @@ describe('CharactersController', () => {
       });
   });
 
-  it('DELETE deleteCharacter', () => {
+  it('#deleteCharacter', () => {
     return request(app.getHttpServer())
       .delete('/characters/1')
       .then((response) => {

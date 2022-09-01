@@ -39,7 +39,7 @@ export class CharactersService {
     return charId;
   }
 
-  getCharacters() {
+  getAllCharacters() {
     return [...this.characters];
   }
 

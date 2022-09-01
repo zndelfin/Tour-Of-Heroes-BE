@@ -2,12 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CharactersController } from './characters.controller';
 import { CharactersService } from './characters.service';
 import { CharactersModule } from './characters.module';
-import { AppModule } from '../app.module';
 import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
-import assert from 'assert';
-import { response } from 'express';
-import { isStringObject } from 'util/types';
 
 describe('CharactersController', () => {
   let app: INestApplication;
@@ -17,10 +13,7 @@ describe('CharactersController', () => {
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [CharactersModule]
-    })
-      .overrideProvider(CharactersService)
-      .useValue(service)
-      .compile();
+    }).compile();
 
     controller = module.get<CharactersController>(CharactersController);
     service = module.get<CharactersService>(CharactersService);

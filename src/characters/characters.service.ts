@@ -59,7 +59,7 @@ export class CharactersService {
   }
 
   deleteCharacter(charId: string) {
-    const filtered = this.characters.filter((character) => charId !== character.id);
-    return (this.characters = filtered);
+    const filtered = this.characters;
+    return filtered.filter((character) => charId !== character.id);
   }
 }

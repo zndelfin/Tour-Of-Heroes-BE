@@ -3,11 +3,7 @@ import { CharactersController } from './characters.controller';
 import { CharactersService } from './characters.service';
 import { CharactersModule } from './characters.module';
 import * as request from 'supertest';
-import { HttpCode, HttpStatus, INestApplication, NotFoundException } from '@nestjs/common';
-import { response } from 'express';
-import { IsNotEmptyObject, IsObject } from 'class-validator';
-import { throwIfEmpty } from 'rxjs';
-import { throws } from 'assert';
+import { INestApplication, NotFoundException } from '@nestjs/common';
 
 describe('CharactersController', () => {
   let app: INestApplication;

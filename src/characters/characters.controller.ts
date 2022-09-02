@@ -5,29 +5,29 @@ import { CharactersService } from './characters.service';
 export class CharactersController {
   constructor(private readonly charactersService: CharactersService) {}
 
-  @Post()
-  addCharacter(@Body('name') charName: string, @Body('description') charDesc: string) {
-    const generatedId = this.charactersService.addCharacter(charName, charDesc);
-    return { id: generatedId };
-  }
+  // @Post()
+  // addCharacter(@Body('name') charName: string, @Body('description') charDesc: string) {
+  //   const generatedId = this.charactersService.addCharacter(charName, charDesc);
+  //   return { id: generatedId };
+  // }
 
-  @Get()
-  getAllCharacters() {
-    return this.charactersService.getCharacters();
-  }
+  // @Get()
+  // getAllCharacters() {
+  //   return this.charactersService.getCharacters();
+  // }
 
-  @Get(':id')
-  getSingleCharacter(@Param('id') charId: string) {
-    return this.charactersService.getSingleCharacter(charId);
-  }
+  // @Get(':id')
+  // getSingleCharacter(@Param('id') charId: string) {
+  //   return this.charactersService.getSingleCharacter(charId);
+  // }
 
-  @Patch(':id')
-  updateCharacter(@Param('id') charId: string, @Body('name') charName: string, @Body('description') charDesc: string) {
-    return this.charactersService.updateCharacter(charId, charName, charDesc);
-  }
+  // @Patch(':id')
+  // updateCharacter(@Param('id') charId: string, @Body('name') charName: string, @Body('description') charDesc: string) {
+  //   return this.charactersService.updateCharacter(charId, charName, charDesc);
+  // }
 
-  @Delete(':id')
-  deleteCharacter(@Param('id') charId: string) {
-    return this.charactersService.deleteCharacter(charId);
-  }
+  // @Delete(':id')
+  // deleteCharacter(@Param('id') charId: string) {
+  //   return this.charactersService.deleteCharacter(charId);
+  // }
 }

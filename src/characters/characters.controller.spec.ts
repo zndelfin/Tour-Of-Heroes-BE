@@ -65,6 +65,7 @@ describe('CharactersController', () => {
   it('#deleteCharacter', async () => {
     const deletedID = '2';
     await request(app.getHttpServer()).delete(`/characters/${deletedID}`);
+
     await request(app.getHttpServer())
       .get(`/characters/${deletedID}`)
       .expect((response) => {

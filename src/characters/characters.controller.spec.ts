@@ -37,7 +37,6 @@ describe('CharactersController', () => {
             })
           ])
         );
-        //console.log(response.body);
       });
   });
 
@@ -48,7 +47,6 @@ describe('CharactersController', () => {
       .then((response) => {
         expect.objectContaining(result);
         expect(response.ok);
-        //console.log(response.body);
       });
   });
 
@@ -63,7 +61,6 @@ describe('CharactersController', () => {
         expect(response.body).toEqual({
           id: expect.any(String)
         });
-        //console.log(response.body);
       });
   });
 
@@ -78,7 +75,6 @@ describe('CharactersController', () => {
       .then((response) => {
         expect(response.body).toEqual(result);
         expect(response.ok);
-        //console.log(response.body);
       });
   });
 
@@ -86,39 +82,16 @@ describe('CharactersController', () => {
     const deletedID = '2';
     return request(app.getHttpServer())
       .delete(`/characters/${deletedID}`)
-      .then((response) => {
-        const character = controller.getSingleCharacter(deletedID);
-        expect(character).not.toBeDefined();
-        expect(response.ok);
-      });
-  });
-
-  it('#validateDeletion', () => {
-    const deletedID = '2';
-    return request(app.getHttpServer())
-      .get(`/characters/${deletedID}`)
+      .expect(200)
       .then(() => {
         const character = controller.getSingleCharacter(deletedID);
         if (!character) {
-          throw new NotFoundException('Character not found');
+          throw new NotFoundException('Character has been deleted');
         } else {
-          return character.id;
+          return null;
         }
       });
   });
-
-  // it('#validateDeletion', () => {
-  //   const deletedID = '2';
-  //   return request(app.getHttpServer())
-  //     .get(`/characters/${deletedID}`)
-  //     .then((response) => {
-  //       expect(response.body).toMatchObject({
-  //         id: deletedID,
-  //         name: expect.any(String),
-  //         description: expect.any(String)
-  //       });
-  //     });
-  // });
 
   afterAll(async () => {
     await app.close();

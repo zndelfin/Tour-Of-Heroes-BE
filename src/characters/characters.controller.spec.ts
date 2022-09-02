@@ -3,7 +3,11 @@ import { CharactersController } from './characters.controller';
 import { CharactersService } from './characters.service';
 import { CharactersModule } from './characters.module';
 import * as request from 'supertest';
-import { INestApplication } from '@nestjs/common';
+import { HttpCode, HttpStatus, INestApplication, NotFoundException } from '@nestjs/common';
+import { response } from 'express';
+import { IsNotEmptyObject, IsObject } from 'class-validator';
+import { throwIfEmpty } from 'rxjs';
+import { throws } from 'assert';
 
 describe('CharactersController', () => {
   let app: INestApplication;
@@ -46,7 +50,6 @@ describe('CharactersController', () => {
     return request(app.getHttpServer())
       .get('/characters/1')
       .then((response) => {
-        //expect(response.body).toEqual(result);
         expect.objectContaining(result);
         expect(response.ok);
         //console.log(response.body);
@@ -88,10 +91,38 @@ describe('CharactersController', () => {
     return request(app.getHttpServer())
       .delete(`/characters/${deletedID}`)
       .then((response) => {
+        const character = controller.getSingleCharacter(deletedID);
+        expect(character).not.toBeDefined();
         expect(response.ok);
-        console.log(response.body);
       });
   });
+
+  it('#validateDeletion', () => {
+    const deletedID = '2';
+    return request(app.getHttpServer())
+      .get(`/characters/${deletedID}`)
+      .then(() => {
+        const character = controller.getSingleCharacter(deletedID);
+        if (!character) {
+          throw new NotFoundException('Character not found');
+        } else {
+          return character.id;
+        }
+      });
+  });
+
+  // it('#validateDeletion', () => {
+  //   const deletedID = '2';
+  //   return request(app.getHttpServer())
+  //     .get(`/characters/${deletedID}`)
+  //     .then((response) => {
+  //       expect(response.body).toMatchObject({
+  //         id: deletedID,
+  //         name: expect.any(String),
+  //         description: expect.any(String)
+  //       });
+  //     });
+  // });
 
   afterAll(async () => {
     await app.close();

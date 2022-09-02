@@ -61,6 +61,9 @@ export class CharactersService {
   deleteCharacter(charId: string) {
     const index = this.characters.findIndex((char) => char.id === charId);
     const filtered = this.characters;
+    if (!charId) {
+      throw new Error('character not found');
+    }
     return filtered.splice(index, 1);
   }
 }

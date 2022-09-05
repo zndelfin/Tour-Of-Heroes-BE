@@ -4,6 +4,7 @@ import { CharactersService } from './characters.service';
 import { CharactersModule } from './characters.module';
 import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
+import { isObject } from 'class-validator';
 
 describe('CharactersController', () => {
   let app: INestApplication;
@@ -73,12 +74,13 @@ describe('CharactersController', () => {
         expect(response.body.id).toBeUndefined();
       });
 
-    // await request(app.getHttpServer())
-    //   .get(`/characters`)
-    //   .expect((response) => {
-    //     console.log(response.body);
-    //     expect(response.body).toContain(deletedID);
-    //   });
+    await request(app.getHttpServer())
+      .get(`/characters`)
+      .expect((response) => {
+        const obj = response.body;
+        const isObjectPresent = obj.find((o) => o.id === deletedID);
+        expect(isObjectPresent).toBeUndefined();
+      });
   });
 
   afterAll(async () => {

@@ -6,29 +6,32 @@ import { Characters } from '../characters.entity';
 export class CharactersController {
   constructor(private readonly charactersService: CharactersService) {}
 
-  // @Post()
-  // addCharacter(@Body('name') charName: string, @Body('description') charDesc: string) {
-  //   const generatedId = this.charactersService.addCharacter(charName, charDesc);
-  //   return { id: generatedId };
-  // }
+  @Post()
+  addCharacter(@Body('name') name: string, @Body('description') description: string) {
+    return this.charactersService.addCharacter(name, description);
+  }
 
-  // @Get()
-  // async getAllCharacters(): Promise<Characters> {
-  //   await this.charactersService.getCharacters();
-  // }
+  @Get()
+  getAllCharacters(): Promise<Characters[]> {
+    return this.charactersService.getAllCharacters();
+  }
 
-  // @Get(':id')
-  // getSingleCharacter(@Param('id') charId: string) {
-  //   return this.charactersService.getSingleCharacter(charId);
-  // }
+  @Get('/:id')
+  getSingleCharacter(@Param('id') id: string): Promise<Characters> {
+    return this.charactersService.getSingleCharacter(id);
+  }
 
-  // @Patch(':id')
-  // updateCharacter(@Param('id') charId: string, @Body('name') charName: string, @Body('description') charDesc: string) {
-  //   return this.charactersService.updateCharacter(charId, charName, charDesc);
-  // }
+  @Patch('/:id')
+  updateProduct(
+    @Param('id') id: string,
+    @Body('name') name: string,
+    @Body('description') description: string
+  ): Promise<Characters> {
+    return this.charactersService.updateCharacter(id, name, description);
+  }
 
-  // @Delete(':id')
-  // deleteCharacter(@Param('id') charId: string) {
-  //   return this.charactersService.deleteCharacter(charId);
-  // }
+  @Delete('/:id')
+  deleteCharacter(@Param('id') id: string): Promise<void> {
+    return this.charactersService.deleteCharacter(id);
+  }
 }

@@ -1,86 +1,53 @@
-import { Injectable } from '@nestjs/common';
-import { CharactersStatus } from './characters-status.enum';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Characters } from '../characters.entity';
-import { CharactersRepository } from './characters.repository';
-import { CharactersModule } from './characters.module';
+import { CharactersModel } from './characters.model';
 
 @Injectable()
 export class CharactersService {
-  // initialValues = [
-  //   {
-  //     id: '1',
-  //     name: 'Aslaug',
-  //     description: 'warrior queen'
-  //   },
-
-  //   {
-  //     id: '2',
-  //     name: 'Ivar the Boneless',
-  //     description: 'commander of the Great Heathen Army'
-  //   },
-
-  //   {
-  //     id: '3',
-  //     name: 'Lagertha the Sheildmaiden',
-  //     description: 'aka Hlaógerór'
-  //   },
-
-  //   {
-  //     id: '4',
-  //     name: 'Ragnar Lothbrok',
-  //     description: 'aka Ragnard Sigurdsson'
-  //   }
-  // ];
+  private charactersModel: CharactersModel[];
 
   constructor(
     @InjectRepository(Characters)
     private charactersRepository: Repository<Characters>
   ) {}
 
-  // private characters: CharactersModel[] = this.initialValues;
-  // addCharacter(name: string, desc: string) {
-  //   const charId = uuid();
-  //   const newCharacter = new CharactersModel(charId, name, desc);
-  //   this.characters.push(newCharacter);
-  //   return charId;
-  // }
-
-  async getCharacters(): Promise<Characters[]> {
-    return await this.charactersRepository.find();
+  async getAllCharacters(): Promise<Characters[]> {
+    const characters = this.charactersRepository.find();
+    return characters;
   }
 
-  // getAllCharacters() {
-  //   return [...this.characters];
-  // }
+  async addCharacter(name: string, description: string) {
+    const newCharacter = new CharactersModel(name, description);
+    return await this.charactersRepository.save(newCharacter);
+  }
 
-  // updateCharacter(characterId: string, name: string, desc: string) {
-  //   const character = this.characters.find((character) => character.id === characterId);
-  //   if (name) {
-  //     character.name = name;
-  //   }
-  //   if (desc) {
-  //     character.description = desc;
-  //   }
-  //   return character;
-  // }
+  async getSingleCharacter(id: string): Promise<Characters> {
+    const found = await this.charactersRepository.findOneBy({ id });
+    if (!found) {
+      throw new NotFoundException('character not found');
+    } else {
+      return found;
+    }
+  }
 
-  // updateCharacter(characterId: string, name: string, desc: string) {
-  //   const character = this.characters.find((character) => character.id === characterId);
-  //   if (name) {
-  //     character.name = name;
-  //   }
-  //   if (desc) {
-  //     character.description = desc;
-  //   }
-  //   return character;
-  // }
+  async updateCharacter(id: string, name: string, description: string): Promise<Characters> {
+    const character = await this.getSingleCharacter(id);
+    if (name) {
+      character.name = name;
+      await this.charactersRepository.save(character);
+    }
+    if (description) {
+      character.description = description;
+      await this.charactersRepository.save(character);
+    }
+    return character;
+  }
 
-  // deleteCharacter(charId: string) {
-  //   let list = this.characters;
-  //   const filtered = list.filter((character) => charId !== character.id);
-  //   this.characters = filtered;
-  //   return `character with ID ${charId} deleted`;
-  // }
+  async deleteCharacter(id: string): Promise<void> {
+    const characterList = this.charactersRepository;
+    await characterList.delete(id);
+    this.charactersRepository = characterList;
+  }
 }

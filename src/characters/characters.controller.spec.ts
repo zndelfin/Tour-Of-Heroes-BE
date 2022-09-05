@@ -1,4 +1,4 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { CharactersController } from './characters.controller';
 import { CharactersService } from './characters.service';
 import { CharactersModule } from './characters.module';
@@ -22,68 +22,63 @@ describe('CharactersController', () => {
     await app.init();
   });
 
-  it('GET allCharacters', () => {
-    return request(app.getHttpServer())
-      .get('/characters')
-      .expect(200)
-      .expect('Content-Type', /json/)
-      .then((response) => {
-        expect(response.body).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              id: expect.any(String),
-              name: expect.any(String),
-              description: expect.any(String)
-            })
-          ])
-        );
-        //console.log(response.body);
-      });
+  it('#getAllCharacters', async () => {
+    const response = await request(app.getHttpServer()).get('/characters').expect(200).expect('Content-Type', /json/);
+    expect(response.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: expect.any(String),
+          name: expect.any(String),
+          description: expect.any(String)
+        })
+      ])
+    );
   });
 
-  it('GET getSingleCharacter', () => {
+  it('#getSingleCharacter', async () => {
     const result = { id: '1', name: 'Aslaug', description: 'warrior queen' };
-    return request(app.getHttpServer())
-      .get('/characters/1')
-      .then((response) => {
-        expect(response.body).toEqual(result);
-        console.log(response.body);
-      });
+    const response = await request(app.getHttpServer()).get('/characters/1');
+    expect.objectContaining(result);
+    expect(response.ok);
   });
 
-  it('POST addCharacter', () => {
-    return request(app.getHttpServer())
-      .post('/characters')
-      .send({
-        name: 'test name',
-        description: 'test description'
-      })
-      .then((response) => {
-        expect(response.body).toEqual({
-          id: expect.any(String)
-        });
-      });
+  test('#addCharacter', async () => {
+    const response = await request(app.getHttpServer()).post('/characters').send({
+      name: 'test name',
+      description: 'test description'
+    });
+    expect(response.body).toEqual({
+      id: expect.any(String)
+    });
   });
 
-  it('PATCH updateCharacter', () => {
+  it('#updateCharacter', async () => {
     const result = { id: '3', name: 'new name', description: 'new description' };
-    return request(app.getHttpServer())
-      .patch('/characters/3')
-      .send({
-        name: 'new name',
-        description: 'new description'
-      })
-      .then((response) => {
-        expect(response.body).toEqual(result);
-        console.log(response.body);
-      });
+    const response = await request(app.getHttpServer()).patch('/characters/3').send({
+      name: 'new name',
+      description: 'new description'
+    });
+    expect(response.body).toEqual(result);
+    expect(response.ok);
   });
 
-  it('DELETE deleteCharacter', () => {
-    return request(app.getHttpServer())
-      .delete('/characters/1')
-      .then((response) => {
-        console.log(response.body);
+  it('#deleteCharacter', async () => {
+    const deletedID = '2';
+    await request(app.getHttpServer()).delete(`/characters/${deletedID}`);
+
+    await request(app.getHttpServer())
+      .get(`/characters/${deletedID}`)
+      .expect((response) => {
+        expect(response.body).toBeTruthy();
+        expect(response.body.id).toBeUndefined();
+      });
+
+    await request(app.getHttpServer())
+      .get(`/characters`)
+      .expect((response) => {
+        const characterList = response.body;
+        const isObjectPresent = characterList.find((character) => character.id === deletedID);
+        expect(isObjectPresent).toBeUndefined();
       });
   });
 

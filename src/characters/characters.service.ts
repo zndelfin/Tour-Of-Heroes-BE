@@ -51,9 +51,20 @@ export class CharactersService {
     return await this.charactersRepository.find();
   }
 
-  async getSingleCharacter(id: string): Promise<Characters> {
-    return await this.charactersRepository.findOneBy({ id });
-  }
+  // getAllCharacters() {
+  //   return [...this.characters];
+  // }
+
+  // updateCharacter(characterId: string, name: string, desc: string) {
+  //   const character = this.characters.find((character) => character.id === characterId);
+  //   if (name) {
+  //     character.name = name;
+  //   }
+  //   if (desc) {
+  //     character.description = desc;
+  //   }
+  //   return character;
+  // }
 
   // updateCharacter(characterId: string, name: string, desc: string) {
   //   const character = this.characters.find((character) => character.id === characterId);
@@ -67,9 +78,9 @@ export class CharactersService {
   // }
 
   // deleteCharacter(charId: string) {
-  //   let filtered = this.characters;
-  //   // return filtered.filter((character) => charId !== character.id);
-  //   const deletedIndex = filtered.findIndex((character) => charId === character.id);
-  //   return filtered.splice(deletedIndex, 1);
+  //   let list = this.characters;
+  //   const filtered = list.filter((character) => charId !== character.id);
+  //   this.characters = filtered;
+  //   return `character with ID ${charId} deleted`;
   // }
 }

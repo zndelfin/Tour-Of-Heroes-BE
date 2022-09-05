@@ -76,8 +76,8 @@ describe('CharactersController', () => {
     await request(app.getHttpServer())
       .get(`/characters`)
       .expect((response) => {
-        const obj = response.body;
-        const isObjectPresent = obj.find((o) => o.id === deletedID);
+        const characterList = response.body;
+        const isObjectPresent = characterList.find((character) => character.id === deletedID);
         expect(isObjectPresent).toBeUndefined();
       });
   });

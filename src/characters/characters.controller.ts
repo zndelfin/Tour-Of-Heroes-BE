@@ -1,5 +1,6 @@
 import { Controller, Post, Body, Get, Param, Patch, Delete } from '@nestjs/common';
 import { CharactersService } from './characters.service';
+import { Characters } from '../characters.entity';
 
 @Controller('characters')
 export class CharactersController {
@@ -12,8 +13,8 @@ export class CharactersController {
   // }
 
   // @Get()
-  // getAllCharacters() {
-  //   return this.charactersService.getCharacters();
+  // async getAllCharacters(): Promise<Characters> {
+  //   await this.charactersService.getCharacters();
   // }
 
   // @Get(':id')

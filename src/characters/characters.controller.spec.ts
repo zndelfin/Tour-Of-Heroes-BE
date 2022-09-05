@@ -62,7 +62,6 @@ describe('CharactersController', () => {
         expect(response.body).toEqual({
           id: expect.any(String)
         });
-        //console.log(response.body);
       });
   });
 

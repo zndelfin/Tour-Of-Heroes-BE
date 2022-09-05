@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Characters } from '../characters.entity';
 import { CharactersRepository } from './characters.repository';
+import { CharactersModule } from './characters.module';
 
 @Injectable()
 export class CharactersService {
@@ -34,7 +35,7 @@ export class CharactersService {
   // ];
 
   constructor(
-    @InjectRepository(CharactersRepository)
+    @InjectRepository(Characters)
     private charactersRepository: Repository<Characters>
   ) {}
 
@@ -46,12 +47,12 @@ export class CharactersService {
   //   return charId;
   // }
 
-  // getCharacters() {
-  //   return [...this.characters];
-  // }
+  async getCharacters(): Promise<Characters[]> {
+    return await this.charactersRepository.find();
+  }
 
-  async getSingleCharacter(characterId: string) {
-    //return this.characters.find((character) => character.id === characterId);
+  async getSingleCharacter(id: string): Promise<Characters> {
+    return await this.charactersRepository.findOneBy({ id });
   }
 
   // updateCharacter(characterId: string, name: string, desc: string) {

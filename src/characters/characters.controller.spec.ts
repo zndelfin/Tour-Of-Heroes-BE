@@ -4,7 +4,6 @@ import { CharactersService } from './characters.service';
 import { CharactersModule } from './characters.module';
 import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
-import { isObject } from 'class-validator';
 
 describe('CharactersController', () => {
   let app: INestApplication;

@@ -71,10 +71,7 @@ describe('CharactersController', () => {
       .expect((response) => {
         const id = response.body.id;
         console.log(response.body);
-        expect(id === undefined).toBeTruthy();
-        expect(id !== '').toBeTruthy();
-        expect(id !== 0).toBeTruthy();
-        expect(id !== false).toBeTruthy();
+        expect(id === undefined && id !== '' && id !== 0 && id !== false).toBeTruthy();
       });
   });
 

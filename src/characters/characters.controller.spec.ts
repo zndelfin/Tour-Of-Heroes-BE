@@ -3,7 +3,8 @@ import { CharactersController } from './characters.controller';
 import { CharactersService } from './characters.service';
 import { CharactersModule } from './characters.module';
 import * as request from 'supertest';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, NotFoundException } from '@nestjs/common';
+import { throws } from 'assert';
 
 describe('CharactersController', () => {
   let app: INestApplication;
@@ -69,11 +70,11 @@ describe('CharactersController', () => {
     await request(app.getHttpServer())
       .get(`/characters/${deletedID}`)
       .expect((response) => {
-        expect(response.body).toMatchObject({
-          id: deletedID,
-          name: expect.any(String),
-          description: expect.any(String)
-        });
+        const id = response.body.id;
+        expect(id === undefined).toBeTruthy();
+        expect(id !== '').toBeTruthy();
+        expect(id !== 0).toBeTruthy();
+        expect(id !== false).toBeTruthy();
       });
   });
 

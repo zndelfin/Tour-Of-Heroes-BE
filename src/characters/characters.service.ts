@@ -59,8 +59,12 @@ export class CharactersService {
   }
 
   deleteCharacter(charId: string) {
-    const list = this.characters;
-    const filtered = list.filter((character) => charId !== character.id);
-    return filtered;
+    let list = this.characters;
+    for (let i = list.length - 1; i >= 0; i--) {
+      if (list[i].id === charId) {
+        list.splice(i, 1);
+      }
+    }
+    return `character with ID ${charId} deleted`;
   }
 }

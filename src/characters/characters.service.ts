@@ -60,11 +60,8 @@ export class CharactersService {
 
   deleteCharacter(charId: string) {
     let list = this.characters;
-    for (let i = list.length - 1; i >= 0; i--) {
-      if (list[i].id === charId) {
-        list.splice(i, 1);
-      }
-    }
+    const filtered = list.filter((character) => charId !== character.id);
+    this.characters = filtered;
     return `character with ID ${charId} deleted`;
   }
 }

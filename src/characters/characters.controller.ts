@@ -1,6 +1,4 @@
 import { Controller, Post, Body, Get, Param, Patch, Delete } from '@nestjs/common';
-import { Console } from 'console';
-import { NotFoundError } from 'rxjs';
 import { CharactersService } from './characters.service';
 
 @Controller('characters')

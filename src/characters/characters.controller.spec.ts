@@ -69,10 +69,16 @@ describe('CharactersController', () => {
     await request(app.getHttpServer())
       .get(`/characters/${deletedID}`)
       .expect((response) => {
-        const id = response.body.id;
-        console.log(response.body);
-        expect(id === undefined && id !== '' && id !== 0 && id !== false).toBeTruthy();
+        expect(response.body).toBeTruthy();
+        expect(response.body.id).toBeUndefined();
       });
+
+    // await request(app.getHttpServer())
+    //   .get(`/characters`)
+    //   .expect((response) => {
+    //     console.log(response.body);
+    //     expect(response.body).toContain(deletedID);
+    //   });
   });
 
   afterAll(async () => {

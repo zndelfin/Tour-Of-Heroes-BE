@@ -4,6 +4,7 @@ import { CharactersService } from './characters.service';
 import { CharactersModule } from './characters.module';
 import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
+import { AppModule } from '../app.module';
 
 describe('CharactersController', () => {
   let app: INestApplication;
@@ -12,7 +13,7 @@ describe('CharactersController', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [CharactersModule]
+      imports: [AppModule]
     }).compile();
 
     controller = module.get<CharactersController>(CharactersController);
@@ -36,8 +37,8 @@ describe('CharactersController', () => {
   });
 
   it('#getSingleCharacter', async () => {
-    const result = { id: '1', name: 'Aslaug', description: 'warrior queen' };
-    const response = await request(app.getHttpServer()).get('/characters/1');
+    const result = { id: '388b9f3b-2dcf-4bcd-a09b-4594cd68294c', name: 'Aslaug', description: 'warrior queen' };
+    const response = await request(app.getHttpServer()).get('/characters/388b9f3b-2dcf-4bcd-a09b-4594cd68294c');
     expect.objectContaining(result);
     expect(response.ok);
   });
@@ -48,13 +49,16 @@ describe('CharactersController', () => {
       description: 'test description'
     });
     expect(response.body).toEqual({
-      id: expect.any(String)
+      id: expect.any(String),
+      name: 'test name',
+      description: 'test description'
     });
   });
 
   it('#updateCharacter', async () => {
-    const result = { id: '3', name: 'new name', description: 'new description' };
-    const response = await request(app.getHttpServer()).patch('/characters/3').send({
+    const updateID = 'e3a80c98-e15d-4d37-b699-be82bf28108d';
+    const result = { id: updateID, name: 'new name', description: 'new description' };
+    const response = await request(app.getHttpServer()).patch(`/characters/${updateID}`).send({
       name: 'new name',
       description: 'new description'
     });
@@ -63,7 +67,7 @@ describe('CharactersController', () => {
   });
 
   it('#deleteCharacter', async () => {
-    const deletedID = '2';
+    const deletedID = '41712d72-df7b-4440-9c6d-926e8fa61f4c';
     await request(app.getHttpServer()).delete(`/characters/${deletedID}`);
 
     await request(app.getHttpServer())

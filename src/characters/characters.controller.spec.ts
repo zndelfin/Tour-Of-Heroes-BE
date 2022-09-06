@@ -36,8 +36,9 @@ describe('CharactersController', () => {
   });
 
   it('#getSingleCharacter', async () => {
-    const result = { id: '388b9f3b-2dcf-4bcd-a09b-4594cd68294c', name: 'Aslaug', description: 'warrior queen' };
-    const response = await request(app.getHttpServer()).get('/characters/388b9f3b-2dcf-4bcd-a09b-4594cd68294c');
+    const getCharacterID = '388b9f3b-2dcf-4bcd-a09b-4594cd68294c';
+    const result = { id: getCharacterID, name: 'Aslaug', description: 'warrior queen' };
+    const response = await request(app.getHttpServer()).get(`/characters/${getCharacterID}`);
     expect.objectContaining(result);
     expect(response.ok);
   });

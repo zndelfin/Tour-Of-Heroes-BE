@@ -1,27 +1,24 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { throws } from 'assert';
 import { Repository } from 'typeorm';
 import { Characters } from '../characters.entity';
 import { CharactersModel } from './characters.model';
 
 @Injectable()
 export class CharactersService {
-  private charactersModel: CharactersModel[];
-
   constructor(
     @InjectRepository(Characters)
     private charactersRepository: Repository<Characters>
   ) {}
 
-  async getAllCharacters(): Promise<Characters[]> {
-    const characters = this.charactersRepository.find();
-    return characters;
-  }
-
   async addCharacter(name: string, description: string) {
     const newCharacter = new CharactersModel(name, description);
     return await this.charactersRepository.save(newCharacter);
+  }
+
+  async getAllCharacters(): Promise<Characters[]> {
+    const characters = this.charactersRepository.find();
+    return characters;
   }
 
   async getSingleCharacter(id: string): Promise<Characters> {

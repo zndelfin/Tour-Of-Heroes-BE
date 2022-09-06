@@ -22,7 +22,7 @@ export class CharactersController {
   }
 
   @Patch('/:id')
-  updateProduct(
+  updateCharacter(
     @Param('id') id: string,
     @Body('name') name: string,
     @Body('description') description: string

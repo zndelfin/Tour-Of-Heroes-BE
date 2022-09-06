@@ -4,6 +4,7 @@ import { CharactersService } from './characters.service';
 import { CharactersModule } from './characters.module';
 import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
+import { AppModule } from '../app.module';
 
 describe('CharactersController', () => {
   let app: INestApplication;
@@ -12,7 +13,7 @@ describe('CharactersController', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [CharactersModule]
+      imports: [AppModule]
     }).compile();
 
     controller = module.get<CharactersController>(CharactersController);
@@ -36,25 +37,32 @@ describe('CharactersController', () => {
   });
 
   it('#getSingleCharacter', async () => {
-    const result = { id: '1', name: 'Aslaug', description: 'warrior queen' };
-    const response = await request(app.getHttpServer()).get('/characters/1');
+    const result = {
+      id: '230a0569-7a21-45f5-88a3-3a7787c804e2',
+      name: 'Aslaug',
+      description: 'warrior queen'
+    };
+    const response = await request(app.getHttpServer()).get('/characters/230a0569-7a21-45f5-88a3-3a7787c804e2');
     expect.objectContaining(result);
     expect(response.ok);
   });
 
   test('#addCharacter', async () => {
     const response = await request(app.getHttpServer()).post('/characters').send({
-      name: 'test name',
-      description: 'test description'
+      name: 'Added Character Name',
+      description: 'Added Character Description'
     });
     expect(response.body).toEqual({
-      id: expect.any(String)
+      id: expect.any(String),
+      name: 'Added Character Name',
+      description: 'Added Character Description'
     });
   });
 
   it('#updateCharacter', async () => {
-    const result = { id: '3', name: 'new name', description: 'new description' };
-    const response = await request(app.getHttpServer()).patch('/characters/3').send({
+    const updateID = '6d4f3793-b884-47d1-a9f3-419354e308ee';
+    const result = { id: updateID, name: 'new name', description: 'new description' };
+    const response = await request(app.getHttpServer()).patch(`/characters/${updateID}`).send({
       name: 'new name',
       description: 'new description'
     });
@@ -63,7 +71,7 @@ describe('CharactersController', () => {
   });
 
   it('#deleteCharacter', async () => {
-    const deletedID = '2';
+    const deletedID = 'edacb9d7-51d6-4996-bf47-3b22efb90684';
     await request(app.getHttpServer()).delete(`/characters/${deletedID}`);
 
     await request(app.getHttpServer())

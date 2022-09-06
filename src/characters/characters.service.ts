@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { throws } from 'assert';
 import { Repository } from 'typeorm';
 import { Characters } from '../characters.entity';
 import { CharactersModel } from './characters.model';

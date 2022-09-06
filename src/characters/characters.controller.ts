@@ -1,23 +1,23 @@
 import { Controller, Post, Body, Get, Param, Patch, Delete } from '@nestjs/common';
 import { CharactersService } from './characters.service';
-import { Characters } from '../characters.entity';
+import { Character } from '../character.entity';
 
 @Controller('characters')
 export class CharactersController {
   constructor(private readonly charactersService: CharactersService) {}
 
   @Post()
-  addCharacter(@Body('name') name: string, @Body('description') description: string): Promise<Characters> {
+  addCharacter(@Body('name') name: string, @Body('description') description: string): Promise<Character> {
     return this.charactersService.addCharacter(name, description);
   }
 
   @Get()
-  getAllCharacters(): Promise<Characters[]> {
+  getAllCharacters(): Promise<Character[]> {
     return this.charactersService.getAllCharacters();
   }
 
   @Get('/:id')
-  getSingleCharacter(@Param('id') id: string): Promise<Characters> {
+  getSingleCharacter(@Param('id') id: string): Promise<Character> {
     return this.charactersService.getSingleCharacter(id);
   }
 
@@ -26,7 +26,7 @@ export class CharactersController {
     @Param('id') id: string,
     @Body('name') name: string,
     @Body('description') description: string
-  ): Promise<Characters> {
+  ): Promise<Character> {
     return this.charactersService.updateCharacter(id, name, description);
   }
 

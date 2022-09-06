@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Get, Param, Patch, Delete } from '@nestjs/common';
 import { CharactersService } from './characters.service';
-import { Character } from '../character.entity';
+import { Character } from './character.entity';
 
 @Controller('characters')
 export class CharactersController {

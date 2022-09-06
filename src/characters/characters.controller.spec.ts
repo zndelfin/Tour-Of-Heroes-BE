@@ -1,7 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { CharactersController } from './characters.controller';
 import { CharactersService } from './characters.service';
-import { CharactersModule } from './characters.module';
 import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from '../app.module';

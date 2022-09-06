@@ -42,7 +42,7 @@ export class CharactersService {
       character.description = description;
       await this.charactersRepository.save(character);
     }
-    return character;
+    return this.getSingleCharacter(id);
   }
 
   async deleteCharacter(id: string): Promise<string> {

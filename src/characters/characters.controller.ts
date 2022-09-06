@@ -7,7 +7,7 @@ export class CharactersController {
   constructor(private readonly charactersService: CharactersService) {}
 
   @Post()
-  addCharacter(@Body('name') name: string, @Body('description') description: string) {
+  addCharacter(@Body('name') name: string, @Body('description') description: string): Promise<Characters> {
     return this.charactersService.addCharacter(name, description);
   }
 
@@ -31,7 +31,7 @@ export class CharactersController {
   }
 
   @Delete('/:id')
-  deleteCharacter(@Param('id') id: string): Promise<void> {
+  deleteCharacter(@Param('id') id: string): Promise<string> {
     return this.charactersService.deleteCharacter(id);
   }
 }

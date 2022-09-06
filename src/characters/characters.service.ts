@@ -11,7 +11,7 @@ export class CharactersService {
     private charactersRepository: Repository<Characters>
   ) {}
 
-  async addCharacter(name: string, description: string) {
+  async addCharacter(name: string, description: string): Promise<Characters> {
     const newCharacter = new CharactersModel(name, description);
     return await this.charactersRepository.save(newCharacter);
   }
@@ -43,9 +43,10 @@ export class CharactersService {
     return character;
   }
 
-  async deleteCharacter(id: string): Promise<void> {
+  async deleteCharacter(id: string): Promise<string> {
     const characterList = this.charactersRepository;
     await characterList.delete(id);
     this.charactersRepository = characterList;
+    return `character with ID ${id} has been deleted`;
   }
 }

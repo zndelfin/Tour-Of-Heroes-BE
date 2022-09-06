@@ -56,7 +56,7 @@ describe('CharactersController', () => {
   });
 
   it('#updateCharacter', async () => {
-    const updateID = 'e3a80c98-e15d-4d37-b699-be82bf28108d';
+    const updateID = 'a30878e5-084b-4ae4-a0da-59dab9750ae2';
     const result = { id: updateID, name: 'new name', description: 'new description' };
     const response = await request(app.getHttpServer()).patch(`/characters/${updateID}`).send({
       name: 'new name',
@@ -64,6 +64,12 @@ describe('CharactersController', () => {
     });
     expect(response.body).toEqual(result);
     expect(response.ok);
+
+    await request(app.getHttpServer())
+      .get(`/characters/${updateID}`)
+      .expect((response) => {
+        expect(response.body).toEqual(result);
+      });
   });
 
   it('#deleteCharacter', async () => {

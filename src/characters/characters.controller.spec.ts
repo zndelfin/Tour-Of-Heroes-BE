@@ -2,9 +2,9 @@ import { Test } from '@nestjs/testing';
 import { CharactersController } from './characters.controller';
 import { CharactersService } from './characters.service';
 import * as request from 'supertest';
-import { INestApplication, NotFoundException } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 import { AppModule } from '../app.module';
-//import { v4 as uuid } from 'uuid';
+import { v4 as uuid } from 'uuid';
 
 const initialValues = [
   {
@@ -69,12 +69,16 @@ describe('CharactersController', () => {
 
   it('#getSingleCharacter', async () => {
     const response = await request(app.getHttpServer()).get('/characters/');
-    const firstCharacter = response.body[0].id;
+    const characterID = response.body[0].id;
 
-    const result = { id: firstCharacter, name: 'Aslaug', description: 'warrior queen' };
+    const result = {
+      id: characterID,
+      name: 'Aslaug',
+      description: 'warrior queen'
+    };
 
     await request(app.getHttpServer())
-      .get(`/characters/${firstCharacter}`)
+      .get(`/characters/${characterID}`)
       .expect((response) => {
         expect(response.body).toEqual(result);
         expect(response.ok);
@@ -84,32 +88,37 @@ describe('CharactersController', () => {
 
   it('#addCharacter', async () => {
     const response = await request(app.getHttpServer()).post('/characters').send({
-      name: 'test name',
-      description: 'test description'
+      name: 'NEWLY ADDED NAME',
+      description: 'NEWLY ADDED DESCRIPTION'
     });
     expect(response.body).toEqual({
       id: expect.any(String),
-      name: 'test name',
-      description: 'test description'
+      name: 'NEWLY ADDED NAME',
+      description: 'NEWLY ADDED DESCRIPTION'
     });
   });
 
   it('#updateCharacter', async () => {
     const response = await request(app.getHttpServer()).get('/characters/');
-    const secondCharacter = response.body[2].id;
-    console.log(secondCharacter);
+    const character = response.body.find(({ name }) => name === 'Ivar the Boneless');
+    const characterID = character.id;
+    console.log(characterID);
 
-    const result = { id: secondCharacter, name: 'new name', description: 'new description' };
+    const result = {
+      id: characterID,
+      name: 'NEW Ivar the Boneless',
+      description: 'NEW commander of the Great Heathen Army'
+    };
 
-    const toUpdate = await request(app.getHttpServer()).patch(`/characters/${secondCharacter}`).send({
-      name: 'new name',
-      description: 'new description'
+    const toUpdate = await request(app.getHttpServer()).patch(`/characters/${characterID}`).send({
+      name: 'NEW Ivar the Boneless',
+      description: 'NEW commander of the Great Heathen Army'
     });
     expect(toUpdate.body).toEqual(result);
     expect(toUpdate.ok);
 
     await request(app.getHttpServer())
-      .get(`/characters/${secondCharacter}`)
+      .get(`/characters/${characterID}`)
       .expect((response) => {
         expect(response.body).toEqual(result);
         console.log(response.body);

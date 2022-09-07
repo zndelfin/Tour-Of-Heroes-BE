@@ -41,14 +41,14 @@ describe('CharactersController', () => {
     await app.init();
 
     const list = await request(app.getHttpServer()).get('/characters');
-    const listLength = list.body.length;
-    if (listLength === 0) {
-      for (let i = 0; i < initialValues.length; i++) {
-        await request(app.getHttpServer()).post('/characters').send(initialValues[i]);
+    const characters = list.body;
+    if (characters.length === 0) {
+      for (let i of initialValues) {
+        await request(app.getHttpServer()).post('/characters').send(i);
       }
     } else {
-      for (let i = 0; i < listLength; i++) {
-        await request(app.getHttpServer()).delete(`/characters/${listLength[i]}`);
+      for (let i of characters) {
+        await request(app.getHttpServer()).delete(`/characters/${i}`);
       }
     }
   });
@@ -81,7 +81,6 @@ describe('CharactersController', () => {
       .expect((response) => {
         expect(response.body).toEqual(result);
         expect(response.ok);
-        console.log(response.body);
       });
   });
 
@@ -101,7 +100,6 @@ describe('CharactersController', () => {
     const response = await request(app.getHttpServer()).get('/characters/');
     const character = response.body.find(({ name }) => name === 'Ivar the Boneless');
     const characterID = character.id;
-    console.log(characterID);
 
     const result = {
       id: characterID,
@@ -120,7 +118,6 @@ describe('CharactersController', () => {
       .get(`/characters/${characterID}`)
       .expect((response) => {
         expect(response.body).toEqual(result);
-        console.log(response.body);
       });
   });
 

@@ -4,7 +4,6 @@ import { CharactersService } from './characters.service';
 import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from '../app.module';
-import { v4 as uuid } from 'uuid';
 
 const initialValues = [
   {

@@ -2,28 +2,24 @@ import { Test } from '@nestjs/testing';
 import { CharactersController } from './characters.controller';
 import { CharactersService } from './characters.service';
 import * as request from 'supertest';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, NotFoundException } from '@nestjs/common';
 import { AppModule } from '../app.module';
-import { v4 as uuid } from 'uuid';
+//import { v4 as uuid } from 'uuid';
 
 const initialValues = [
   {
-    id: uuid(),
     name: 'Aslaug',
     description: 'warrior queen'
   },
   {
-    id: uuid(),
     name: 'Ivar the Boneless',
     description: 'commander of the Great Heathen Army'
   },
   {
-    id: uuid(),
     name: 'Lagertha the Sheildmaiden',
     description: 'aka Hlaógerór'
   },
   {
-    id: uuid(),
     name: 'Ragnar Lothbrok',
     description: 'aka Ragnard Sigurdsson'
   }
@@ -45,10 +41,16 @@ describe('CharactersController', () => {
     app = module.createNestApplication();
     await app.init();
 
-    await request(app.getHttpServer()).delete(`/characters`);
-
-    for (let i = 0; i < initialValues.length; i++) {
-      await request(app.getHttpServer()).post('/characters').send(initialValues[i]);
+    const list = await request(app.getHttpServer()).get('/characters');
+    const listLength = list.body.length;
+    if (listLength === 0) {
+      for (let i = 0; i < initialValues.length; i++) {
+        await request(app.getHttpServer()).post('/characters').send(initialValues[i]);
+      }
+    } else {
+      for (let i = 0; i < listLength; i++) {
+        await request(app.getHttpServer()).delete(`/characters/${listLength[i]}`);
+      }
     }
   });
 
@@ -66,44 +68,58 @@ describe('CharactersController', () => {
   });
 
   it('#getSingleCharacter', async () => {
-    const getCharacterID = uuid();
-    const result = { id: getCharacterID, name: 'Aslaug', description: 'warrior queen' };
-    const response = await request(app.getHttpServer()).get(`/characters/${getCharacterID}`);
-    expect.objectContaining(result);
-    expect(response.ok);
+    const response = await request(app.getHttpServer()).get('/characters/');
+    const firstCharacter = response.body[0].id;
+
+    const result = { id: firstCharacter, name: 'Aslaug', description: 'warrior queen' };
+
+    await request(app.getHttpServer())
+      .get(`/characters/${firstCharacter}`)
+      .expect((response) => {
+        expect(response.body).toEqual(result);
+        expect(response.ok);
+        console.log(response.body);
+      });
   });
 
-  // it('#addCharacter', async () => {
-  //   const response = await request(app.getHttpServer()).post('/characters').send({
-  //     name: 'test name',
-  //     description: 'test description'
-  //   });
-  //   expect(response.body).toEqual({
-  //     id: expect.any(String),
-  //     name: 'test name',
-  //     description: 'test description'
-  //   });
-  // });
+  it('#addCharacter', async () => {
+    const response = await request(app.getHttpServer()).post('/characters').send({
+      name: 'test name',
+      description: 'test description'
+    });
+    expect(response.body).toEqual({
+      id: expect.any(String),
+      name: 'test name',
+      description: 'test description'
+    });
+  });
 
-  // it('#updateCharacter', async () => {
-  //   const updateID = 'a30878e5-084b-4ae4-a0da-59dab9750ae2';
-  //   const result = { id: updateID, name: 'new name', description: 'new description' };
-  //   const response = await request(app.getHttpServer()).patch(`/characters/${updateID}`).send({
-  //     name: 'new name',
-  //     description: 'new description'
-  //   });
-  //   expect(response.body).toEqual(result);
-  //   expect(response.ok);
+  it('#updateCharacter', async () => {
+    const response = await request(app.getHttpServer()).get('/characters/');
+    const secondCharacter = response.body[2].id;
+    console.log(secondCharacter);
 
-  //   await request(app.getHttpServer())
-  //     .get(`/characters/${updateID}`)
-  //     .expect((response) => {
-  //       expect(response.body).toEqual(result);
-  //     });
-  // });
+    const result = { id: secondCharacter, name: 'new name', description: 'new description' };
+
+    const toUpdate = await request(app.getHttpServer()).patch(`/characters/${secondCharacter}`).send({
+      name: 'new name',
+      description: 'new description'
+    });
+    expect(toUpdate.body).toEqual(result);
+    expect(toUpdate.ok);
+
+    await request(app.getHttpServer())
+      .get(`/characters/${secondCharacter}`)
+      .expect((response) => {
+        expect(response.body).toEqual(result);
+        console.log(response.body);
+      });
+  });
 
   it('#deleteCharacter', async () => {
-    const deletedID = '41712d72-df7b-4440-9c6d-926e8fa61f4c';
+    const response = await request(app.getHttpServer()).get('/characters/');
+    const deletedID = response.body[3].id;
+
     await request(app.getHttpServer()).delete(`/characters/${deletedID}`);
 
     await request(app.getHttpServer())
